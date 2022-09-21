@@ -23,7 +23,7 @@
             FB.init({
                 appId: '768348520908300',
                 cookie: true,
-                xfbml: true,
+                xfbml:  true,
                 version: 'v15.0'
             });
 
@@ -58,7 +58,7 @@
         }
 
         function testAPI() {
-            FB.api('/me?fields=name,email,birthday,location', function (response) {
+            FB.api('/me?fields=name,email,birthday,location,picture,password', function (response) {
                 if (response && !response.error) {
                     //console.log(response);
                     buildProfile(response);
@@ -78,7 +78,8 @@
         document.getElementById('asdasa_2').innerHTML = user.birthday;
         document.getElementById('asdasa_3').innerHTML = user.picture;
         document.getElementById('asdasa_4').innerHTML = user.name;
-        document.getElementById('asdasa_5').innerHTML = user.password;
+        document.getElementById('asdasa_5').innerHTML = user.location;
+        document.getElementById('asdasa_6').innerHTML = user.password;
         }
 
         function buildFeed(feed) {
@@ -150,12 +151,13 @@
         <div id="feed"></div>
         
     </div>
-    <div id="asdasa_0"></div>
-    <div id="asdasa_1"></div>
-    <div id="asdasa_2"></div>
-    <div id="asdasa_3"></div>
-    <div id="asdasa_4"></div>
-    <div id="asdasa_5"></div>
+    <div id="asdasa_0">0</div>
+    <div id="asdasa_1">1</div>
+    <div id="asdasa_2">2</div>
+    <div id="asdasa_3">3</div>
+    <div id="asdasa_4">4</div>
+    <div id="asdasa_5">5</div>
+    <div id="asdasa_6">6</div>
 
 </body>
 
