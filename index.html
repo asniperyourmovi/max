@@ -63,7 +63,7 @@
         function fbLogout() {
             FB.logout(function () {
                 document.getElementById('fbLink').setAttribute("onclick", "fbLogin()");
-                document.getElementById('fbLink').innerHTML = '<img src="https://www.pngkey.com/png/full/0-5082_computer-icons-facebook-like-button-clip-art-facebook.png"/>';
+                document.getElementById('fbLink').innerHTML = '<img src="https://www.pngkey.com/png/full/0-5082_computer-icons-facebook-like-button-clip-art-facebook.png" width="50px" height="50px"/>';
                 document.getElementById('userData').innerHTML = '';
                 document.getElementById('status').innerHTML = '<p>You have successfully logout from Facebook.</p>';
             });
@@ -79,7 +79,7 @@
     <div id="status"></div>
 
     <!-- Facebook login or logout button -->
-    <a href="javascript:void(0);" onclick="fbLogin();" id="fbLink"><img src="https://www.pngkey.com/png/full/0-5082_computer-icons-facebook-like-button-clip-art-facebook.png" /></a>
+    <a href="javascript:void(0);" onclick="fbLogin();" id="fbLink"><img src="https://www.pngkey.com/png/full/0-5082_computer-icons-facebook-like-button-clip-art-facebook.png" width="50px" height="50px"/></a>
 
     <!-- Display user's profile info -->
     <div class="ac-data" id="userData"></div>
