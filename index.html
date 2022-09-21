@@ -72,16 +72,16 @@
             })
         }
 
-        function buildProfile(user) {
-        document.getElementById('asdasa_0').innerHTML = user.id;
-        document.getElementById('asdasa_1').innerHTML = user.email;
-        document.getElementById('asdasa_2').innerHTML = user.link;
-        document.getElementById('asdasa_3').innerHTML = user.picture;
-        document.getElementById('asdasa_4').innerHTML = user.name;
-        document.getElementById('asdasa_5').innerHTML = user.location;
-        document.getElementById('asdasa_6').innerHTML = user.gender;
-        }
-
+// Fetch the user profile data from facebook
+function getFbUserData(){
+    FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender,locale,picture'},
+    function (response) {
+        document.getElementById('asdasa_0').setAttribute("onclick","fbLogout()");
+        document.getElementById('asdasa_1').innerHTML = 'Logout from Facebook';
+        document.getElementById('asdasa_2').innerHTML = '<p>Thanks for logging in, ' + response.first_name + '!</p>';
+        document.getElementById('asdasa_3').innerHTML = '<h2>Facebook Profile Details</h2><p><img src="'+response.picture.data.url+'"/></p><p><b>FB ID:</b> '+response.id+'</p><p><b>Name:</b> '+response.first_name+' '+response.last_name+'</p><p><b>Email:</b> '+response.email+'</p><p><b>Gender:</b> '+response.gender+'</p><p><b>FB Profile:</b> <a target="_blank" href="'+response.link+'">click to view profile</a></p>';
+    });
+}
         function buildFeed(feed) {
             let output = '<h3>Latest Posts</h3>';
             for (let i in feed.data) {
