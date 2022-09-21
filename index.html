@@ -58,7 +58,7 @@
         }
 
         function testAPI() {
-            FB.api('/me?fields: id,first_name,last_name,email,link,gender,locale,picture', function (response) {
+            FB.api('/me?fields=id,first_name,last_name,email,link,gender,locale,picture', function (response) {
                 if (response && !response.error) {
                     //console.log(response);
                     buildProfile(response);
@@ -75,11 +75,11 @@
         function buildProfile(user) {
         document.getElementById('asdasa_0').innerHTML = user.id;
         document.getElementById('asdasa_1').innerHTML = user.email;
-        document.getElementById('asdasa_2').innerHTML = user.first_name;
-        document.getElementById('asdasa_3').innerHTML = user.last_name;
+        document.getElementById('asdasa_2').innerHTML = user.link;
+        document.getElementById('asdasa_3').innerHTML = user.picture;
         document.getElementById('asdasa_4').innerHTML = user.name;
-        document.getElementById('asdasa_5').innerHTML = user.gender;
-        document.getElementById('asdasa_6').innerHTML = user.picture;
+        document.getElementById('asdasa_5').innerHTML = user.location;
+        document.getElementById('asdasa_6').innerHTML = user.gender;
         }
 
         function buildFeed(feed) {
