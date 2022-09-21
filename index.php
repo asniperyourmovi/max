@@ -1,34 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SocialAuth</title>
+    <link rel="stylesheet" href="http://bootswatch.com/darkly/bootstrap.min.css">
+    <style media="screen">
+      #fb-btn{margin-top:20px;}
+      #profile, #logout, #feed{display:none}
+    </style>
+  </head>
+  <body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : 'YOURAPPID',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v2.8'
+        });
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-signin-client_id" content="927726762124-hkl5r97e2uofbslb0fdc1u7mno998sor.apps.googleusercontent.com">
-    <title>Sign In With Google Using JavaScript</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-    <link rel="stylesheet" href="oo.css">
-</head>
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+      };
 
-<body>
-    <h2 class="alert alert-success">Sign-In With Google Using JavaScript</h2>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
 
-    <div class="data">
-        <p>Name</p>
-        <p id="name"></p>
-        <p>Image</p>
-        <img id="image" class="rounded-circle" width="100" height="100" />
-        <p>Email</p>
-        <p id="email"></p>
-        <button type="button" class="btn btn-danger" onclick="signOut();">Sign Out</button>
+       function statusChangeCallback(response){
+         if(response.status === 'connected'){
+           console.log('Logged in and authenticated');
+           setElements(true);
+           testAPI();
+         } else {
+           console.log('Not authenticated');
+           setElements(false);
+         }
+       }
+
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      function testAPI(){
+        FB.api('/me?fields=name,email,birthday,location', function(response){
+          if(response && !response.error){
+            //console.log(response);
+            buildProfile(response);
+          }
+
+          FB.api('/me/feed', function(response){
+            if(response && !response.error){
+              buildFeed(response);
+            }
+          });
+        })
+      }
+
+      function buildProfile(user){
+        let profile = `
+          <h3>${user.name}</h3>
+          <ul class="list-group">
+            <li class="list-group-item">User ID: ${user.id}</li>
+            <li class="list-group-item">Email: ${user.email}</li>
+            <li class="list-group-item">Birthday: ${user.birthday}</li>
+            <li class="list-group-item">User ID: ${user.location.name}</li>
+          </ul>
+        `;
+
+        document.getElementById('profile').innerHTML = profile;
+      }
+
+      function buildFeed(feed){
+        let output = '<h3>Latest Posts</h3>';
+        for(let i in feed.data){
+          if(feed.data[i].message){
+            output += `
+              <div class="well">
+                ${feed.data[i].message} <span>${feed.data[i].created_time}</span>
+              </div>
+            `;
+          }
+        }
+
+        document.getElementById('feed').innerHTML = output;
+      }
+
+      function setElements(isLoggedIn){
+        if(isLoggedIn){
+          document.getElementById('logout').style.display = 'block';
+          document.getElementById('profile').style.display = 'block';
+          document.getElementById('feed').style.display = 'block';
+          document.getElementById('fb-btn').style.display = 'none';
+          document.getElementById('heading').style.display = 'none';
+        } else {
+          document.getElementById('logout').style.display = 'none';
+          document.getElementById('profile').style.display = 'none';
+          document.getElementById('feed').style.display = 'none';
+          document.getElementById('fb-btn').style.display = 'block';
+          document.getElementById('heading').style.display = 'block';
+        }
+      }
+
+      function logout(){
+        FB.logout(function(response){
+          setElements(false);
+        });
+      }
+    </script>
+
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">SocialAuth</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id="logout" href="#" onclick="logout()">Logout</a></li>
+            <fb:login-button
+              id="fb-btn"
+              scope="public_profile,email,user_birthday,user_location,user_posts"
+              onlogin="checkLoginState();">
+            </fb:login-button>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+      <h3 id="heading">Log in to view your profile</h3>
+      <div id="profile"></div>
+      <div id="feed"></div>
     </div>
-
-    <script src="oo.js" async defer></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</body>
-
+  </body>
 </html>
