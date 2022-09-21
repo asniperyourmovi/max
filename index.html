@@ -3,161 +3,86 @@
 
 <head>
     <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>SocialAuth</title>
-    <style media="screen">
-        #fb-btn {
-            margin-top: 20px;
-        }
-
-        #profile,
-        #logout,
-        #feed {
-            display: none
-        }
-    </style>
 </head>
 
 <body>
     <script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '768348520908300',
-                cookie: true,
-                xfbml:  true,
-                version: 'v15.0'
-            });
-
-            FB.getLoginStatus(function (response) {
-                statusChangeCallback(response);
-            });
-        };
-
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
-        function statusChangeCallback(response) {
-            if (response.status === 'connected') {
-                console.log('Logged in and authenticated');
-                setElements(true);
-                testAPI();
-            } else {
-                console.log('Not authenticated');
-                setElements(false);
-            }
+        window.fbAsyncInit = function() {
+    // FB JavaScript SDK configuration and setup
+    FB.init({
+      appId      : '768348520908300', // FB App ID
+      cookie     : true,  // enable cookies to allow the server to access the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v15.0' // use graph api version 2.8
+    });
+    
+    // Check whether the user already logged in
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            //display user data
+            getFbUserData();
         }
+    });
+};
 
-        function checkLoginState() {
-            FB.getLoginStatus(function (response) {
-                statusChangeCallback(response);
-            });
+// Load the JavaScript SDK asynchronously
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+// Facebook login with JavaScript SDK
+function fbLogin() {
+    FB.login(function (response) {
+        if (response.authResponse) {
+            // Get and display the user profile data
+            getFbUserData();
+        } else {
+            document.getElementById('status').innerHTML = 'User cancelled login or did not fully authorize.';
         }
-
-        function testAPI() {
-            FB.api('/me?fields=id,first_name,last_name,email,link,gender,locale,picture', function (response) {
-                if (response && !response.error) {
-                    //console.log(response);
-                    buildProfile(response);
-                }
-
-                FB.api('/me/feed', function (response) {
-                    if (response && !response.error) {
-                        buildFeed(response);
-                    }
-                });
-            })
-        }
+    }, {scope: 'email'});
+}
 
 // Fetch the user profile data from facebook
 function getFbUserData(){
     FB.api('/me', {locale: 'en_US', fields: 'id,first_name,last_name,email,link,gender,locale,picture'},
     function (response) {
-        document.getElementById('asdasa_0').setAttribute("onclick","fbLogout()");
-        document.getElementById('asdasa_1').innerHTML = 'Logout from Facebook';
-        document.getElementById('asdasa_2').innerHTML = '<p>Thanks for logging in, ' + response.first_name + '!</p>';
-        document.getElementById('asdasa_3').innerHTML = '<h2>Facebook Profile Details</h2><p><img src="'+response.picture.data.url+'"/></p><p><b>FB ID:</b> '+response.id+'</p><p><b>Name:</b> '+response.first_name+' '+response.last_name+'</p><p><b>Email:</b> '+response.email+'</p><p><b>Gender:</b> '+response.gender+'</p><p><b>FB Profile:</b> <a target="_blank" href="'+response.link+'">click to view profile</a></p>';
+        document.getElementById('fbLink').setAttribute("onclick","fbLogout()");
+        document.getElementById('fbLink').innerHTML = 'Logout from Facebook';
+        document.getElementById('status').innerHTML = '<p>Thanks for logging in, ' + response.first_name + '!</p>';
+        document.getElementById('userData').innerHTML = '<h2>Facebook Profile Details</h2><p><img src="'+response.picture.data.url+'"/></p><p><b>FB ID:</b> '+response.id+'</p><p><b>Name:</b> '+response.first_name+' '+response.last_name+'</p><p><b>Email:</b> '+response.email+'</p><p><b>Gender:</b> '+response.gender+'</p><p><b>FB Profile:</b> <a target="_blank" href="'+response.link+'">click to view profile</a></p>';
     });
 }
-        function buildFeed(feed) {
-            let output = '<h3>Latest Posts</h3>';
-            for (let i in feed.data) {
-                if (feed.data[i].message) {
-                    output += `
-              <div class="well">
-                ${feed.data[i].message} <span>${feed.data[i].created_time}</span>
-              </div>
-            `;
-                }
-            }
 
-            document.getElementById('feed').innerHTML = output;
-        }
+// Logout from facebook
+function fbLogout() {
+    FB.logout(function() {
+        document.getElementById('fbLink').setAttribute("onclick","fbLogin()");
+        document.getElementById('fbLink').innerHTML = '<img src="images/fb-login-btn.png"/>';
+        document.getElementById('userData').innerHTML = '';
+        document.getElementById('status').innerHTML = '<p>You have successfully logout from Facebook.</p>';
+    });
+}
 
-        function setElements(isLoggedIn) {
-            if (isLoggedIn) {
-                document.getElementById('logout').style.display = 'block';
-                document.getElementById('profile').style.display = 'block';
-                document.getElementById('feed').style.display = 'block';
-                document.getElementById('fb-btn').style.display = 'none';
-                document.getElementById('heading').style.display = 'none';
-            } else {
-                document.getElementById('logout').style.display = 'none';
-                document.getElementById('profile').style.display = 'none';
-                document.getElementById('feed').style.display = 'none';
-                document.getElementById('fb-btn').style.display = 'block';
-                document.getElementById('heading').style.display = 'block';
-            }
-        }
-
-        function logout() {
-            FB.logout(function (response) {
-                setElements(false);
-            });
-        }
     </script>
 
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">SocialAuth</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="index.html">Home</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a id="logout" href="#" onclick="logout()">Logout</a></li>
-                    <fb:login-button id="fb-btn" scope="public_profile,email,user_birthday,user_location,user_posts" onlogin="checkLoginState();"> </fb:login-button>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-    </nav>
+    
+    
+    
+    
+    <!-- Display login status -->
+<div id="status"></div>
 
-    <div class="container">
-        <h3 id="heading">Log in to view your profile</h3>
-        <div id="profile"></div>
-        <div id="feed"></div>
-        
-    </div>
-    <div id="asdasa_0">0</div>
-    <div id="asdasa_1">1</div>
-    <div id="asdasa_2">2</div>
-    <div id="asdasa_3">3</div>
-    <div id="asdasa_4">4</div>
-    <div id="asdasa_5">5</div>
-    <div id="asdasa_6">6</div>
+<!-- Facebook login or logout button -->
+<a href="javascript:void(0);" onclick="fbLogin();" id="fbLink"><img src="images/fb-login-btn.png"/></a>
+
+<!-- Display user's profile info -->
+<div class="ac-data" id="userData"></div>
 
 </body>
 
