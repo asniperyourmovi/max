@@ -61,12 +61,7 @@
 
         // Logout from facebook
         function fbLogout() {
-            FB.logout(function () {
-                document.getElementById('fbLink').setAttribute("onclick", "fbLogin()");
-                document.getElementById('fbLink').innerHTML = '<img src="https://www.pngkey.com/png/full/0-5082_computer-icons-facebook-like-button-clip-art-facebook.png" width="50px" height="50px"/>';
-                document.getElementById('userData').innerHTML = '';
-                document.getElementById('status').innerHTML = '<p>You have successfully logout from Facebook.</p>';
-            });
+            FB.logout();
         }
 
     </script>
