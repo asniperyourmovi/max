@@ -61,7 +61,7 @@
 
         // Logout from facebook
         function fbLogout() {
-            FB.logout;
+          FB.logout(function () { document.getElementById('userData').innerHTML = ''; });
         }
 
     </script>
