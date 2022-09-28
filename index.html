@@ -28,7 +28,7 @@ $(document).ready(function () {
     }); google.accounts.id.prompt();
 })
         
-            const buttonElement = document.getElementById('BUT-GOOGLE');
+           var buttonElement = document.getElementById('BUT-GOOGLE');
             buttonElement.addEventListener('click', () => {
                 google.accounts.id.initialize();
             });
@@ -36,7 +36,7 @@ $(document).ready(function () {
     </script>
 
 
-  <div id="BUT-GOOGLE"></div>
+  <div id="BUT-GOOGLE" class="btn btn-icon btn-neutral btn-round"><i class="fa-brands fa-google" style="font-size: 18px;color: black;"></i></div>
 <div id="as1"></div>
 <div id="as2"></div>
 <div id="as3"></div>
