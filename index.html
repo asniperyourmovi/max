@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src=""></script>
+    <script src="dasd.js"></script>
     <title>SocialAuth</title>
 </head>
 
@@ -13,18 +13,10 @@
     <script>
 function handleCredentialResponse(response) {
     var data = jwt_decode(response.credential);
-    var ZX_0 = data.email;
-    var ZX_1 = data.name;
-    var ZX_2 = data.picture;
-    var EN = document.getElementById("EN_AR").value;
-    jQuery.ajax({
-        url: "../CODE/CODE_SINGUP.PHP",
-        data: { ZX_0: ZX_0, ZX_1: ZX_1, ZX_2: ZX_2, EN: EN },
-        type: "POST",
-        success: function (data) {
-            $("#CODE_MOVE").html(data);
-        }
-    });
+    $("#as1").html(data.email);
+    $("#as2").html(data.picture);
+    $("#as3").html(data.name);
+
 }
 $(document).ready(function () {
     google.accounts.id.initialize({
@@ -35,11 +27,19 @@ $(document).ready(function () {
         theme: "outline", type: "icon", shape: "square", text: "signup_with", size: "large", locale: "en",
     }); google.accounts.id.prompt();
 })
+        
+            const buttonElement = document.getElementById('BUT-GOOGLE');
+            buttonElement.addEventListener('click', () => {
+                google.accounts.id.initialize();
+            });
 
     </script>
 
 
-
+  <div id="BUT-GOOGLE"></div>
+<div id="as1"></div>
+<div id="as2"></div>
+<div id="as3"></div>
 </body>
 
 </html>
