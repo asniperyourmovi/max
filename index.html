@@ -1,89 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Firebase Auth: Google - TechFerment</title>
-  </head>
-  <body>
-    <h1>Welcome : Firebase Auth: Google</h1>
-    <p>TechFerment: Firebase For Web</p>
+<html>
+<head>
+<title>Your Website Title</title>
+<!-- You can use Open Graph tags to customize link previews.
+Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+<meta property="og:url"           content="https://asniperyourmovi.github.io/max/index.html" />
+<meta property="og:type"          content="website" />
+<meta property="og:title"         content="title" />
+<meta property="og:description"   content="description" />
+<meta property="og:image"         content="https://i.ytimg.com/vi/opwGsUHVrNI/maxresdefault.jpg" />
 
-    <div id="LoginScreen">
-      <button id="login">Login with Google</button>
-    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-    <div id="dashboard">
-      <div id="userDetails"></div>
-      <button id="logout">Logout</button>
-    </div>
+<meta name="twitter:card" content="player">
+<meta name="twitter:site" content="site">
+<meta name="twitter:description" content="description">
+<meta name="twitter:app:name:iphone" content="app:name:iphone">
+<meta name="twitter:app:id:iphone" content="id:iphone">
+<meta name="twitter:app:url:iphone" content="url:iphone">
+<meta name="twitter:app:name:ipad" content="app:name:ipad">
+<meta name="twitter:app:id:ipad" content="app:id:ipad">
+<meta name="twitter:app:url:ipad" content="app:url:ipad">
+<meta name="twitter:app:name:googleplay" content="app:name:googleplay">
+<meta name="twitter:app:id:googleplay" content="app:id:googleplay">
+<meta name="twitter:app:url:googleplay" content="app:url:googleplay">
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+</head>
+<body>
 
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+<div class="asdqw" style="
+    width: 50px;
+    height: 50px;
+    background: #000;
+"></div>
 
-    <script type="module" >
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-      apiKey: "AIzaSyAN-9K8nCOgTF9rD3T6o-tB4Hom3V9BAUw",
-      authDomain: "musicherh.firebaseapp.com",
-      projectId: "musicherh",
-      storageBucket: "musicherh.appspot.com",
-      messagingSenderId: "144940464951",
-      appId: "1:144940464951:web:304dcf2561f5309ea7b8b2"
-    }; 
-       // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
+<div class="asqwws" style="
+    width: 50px;
+    height: 50px;
+    background: aqua;
+"></div>
 
-      document.getElementById('dashboard').style.display="none"
+<script>
 
-      document.getElementById('login').addEventListener('click', GoogleLogin)
-      document.getElementById('logout').addEventListener('click', LogoutUser)
+$(document).on('click', '.asdqw', function(){
+var url = location.href;
+var asdaa = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=600,height=600`;
 
-      let provider = new firebase.auth.GoogleAuthProvider()
+open(asdaa, 'test', params);
 
-      function GoogleLogin(){
-        firebase.auth().signInWithPopup(provider).then(res=>{
-          document.getElementById('LoginScreen').style.display="none"
-          document.getElementById('dashboard').style.display="block"
-          showUserDetails(res.user)
-        }).catch(e=>{
-        })
-      }
+});
 
-      function showUserDetails(user){
-        document.getElementById('userDetails').innerHTML = `
-          <img src="${user.photoURL}" style="width:10%">
-          <p>Name: ${user.displayName}</p>
-          <p>Email: ${user.email}</p>
-        `
-      }
 
-      function checkAuthState(){
-        firebase.auth().onAuthStateChanged(user=>{
-          if(user){
-            document.getElementById('LoginScreen').style.display="none"
-            document.getElementById('dashboard').style.display="block"
-            showUserDetails(user)
-          }else{
 
-          }
-        })
-      }
 
-      function LogoutUser(){
-        firebase.auth().signOut().then(()=>{
-          document.getElementById('LoginScreen').style.display="block"
-          document.getElementById('dashboard').style.display="none"
-        }).catch(e=>{
-          console.log(e)
-        })
-      }
-      checkAuthState()
-    </script>
-  </body>
+$(document).on('click', '.asqwws', function(){
+var url = location.href;
+var asdaa = `https://twitter.com/intent/tweet?url=${url}`;
+let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
+width=600,height=600`;
+
+open(asdaa, 'test', params);
+
+});
+
+</script>
+
+
+
+</body>
 </html>
